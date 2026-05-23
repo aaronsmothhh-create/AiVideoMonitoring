@@ -418,6 +418,7 @@ def list_events(
     date_from: str | None = None,
     date_to: str | None = None,
     limit: int | None = None,
+    offset: int = 0,
 ) -> list[VideoEvent]:
     query = "SELECT * FROM events WHERE 1 = 1"
     params: list[object] = []
@@ -440,6 +441,9 @@ def list_events(
     if limit:
         query += " LIMIT ?"
         params.append(limit)
+    if offset > 0:
+        query += " OFFSET ?"
+        params.append(offset)
     with connect() as connection:
         rows = connection.execute(query, params).fetchall()
     return [row_to_event(row) for row in rows]

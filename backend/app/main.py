@@ -3,12 +3,17 @@ from __future__ import annotations
 import html
 import json
 import logging
+import os
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 import db
 import reports
@@ -36,11 +41,42 @@ from stream_capture import FrameCache
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="AI Video Monitoring MVP")
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "AI_MONITOR_CORS_ORIGINS",
+        "http://localhost:5173,http://localhost:8000,http://localhost:3000",
+    ).split(",")
+    if origin.strip()
+]
+
+limiter = Limiter(key_func=get_remote_address)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    db.init_db()
+    runtime.start()
+    yield
+    runtime.stop()
+
+
+app = FastAPI(title="AI Video Monitoring MVP", lifespan=lifespan)
+app.state.limiter = limiter
+
+
+@app.exception_handler(RateLimitExceeded)
+async def _rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    return Response(
+        content=json.dumps({"detail": "Too many requests. Please try again later."}),
+        status_code=429,
+        media_type="application/json",
+    )
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -70,17 +106,6 @@ async def api_auth_middleware(request: Request, call_next):
                 media_type="application/json",
             )
     return await call_next(request)
-
-
-@app.on_event("startup")
-async def startup() -> None:
-    db.init_db()
-    runtime.start()
-
-
-@app.on_event("shutdown")
-async def shutdown() -> None:
-    runtime.stop()
 
 
 def _require_camera(camera_id: str) -> Camera:
@@ -145,7 +170,8 @@ async def healthz():
 
 
 @app.post("/api/auth/login", response_model=AuthLoginResponse)
-async def auth_login(payload: AuthLoginRequest):
+@limiter.limit("10/minute")
+async def auth_login(request: Request, payload: AuthLoginRequest):
     return login_user(payload)
 
 
@@ -220,12 +246,12 @@ async def get_camera_detections(camera_id: str):
     return runtime.detections_payload(camera_id)
 
 
-@app.get("/api/public-sources")
+@app.get("/api/sources/public")
 async def get_public_sources():
     return PUBLIC_VIDEO_SOURCES
 
 
-@app.get("/api/detection-capabilities")
+@app.get("/api/capabilities")
 async def get_detection_capabilities():
     return DETECTION_CAPABILITIES
 
@@ -237,8 +263,14 @@ async def get_events(
     camera_id: str | None = Query(default=None),
     date_from: str | None = Query(default=None),
     date_to: str | None = Query(default=None),
+    offset: int = Query(default=0, ge=0),
+    limit: int = Query(default=50, ge=1, le=500),
 ):
-    return db.list_events(event_type=event_type, status=status, camera_id=camera_id, date_from=date_from, date_to=date_to)
+    return db.list_events(
+        event_type=event_type, status=status, camera_id=camera_id,
+        date_from=date_from, date_to=date_to,
+        offset=offset, limit=limit,
+    )
 
 
 @app.get("/api/events/{event_id}", response_model=VideoEvent)
