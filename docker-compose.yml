@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - AI_MONITORING_DB_PATH=/app/monitoring.db
+      - AI_MONITOR_PASSWORD_ADMIN
+      - AI_MONITOR_PASSWORD_OPERATOR
+      - AI_MONITOR_PASSWORD_MANAGER
+      - TELEGRAM_BOT_TOKEN
+      - TELEGRAM_CHAT_ID
+    volumes:
+      - ./backend/monitoring.db:/app/monitoring.db
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')\"" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3

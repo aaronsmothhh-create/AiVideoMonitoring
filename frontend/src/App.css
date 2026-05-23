@@ -1,0 +1,11 @@
+/* Component-scoped tweaks. Most styling lives in Tailwind utilities and index.css. */
+.aegis-input {
+  background-color: #171b26;
+  border: 1px solid #30363d;
+  color: #dfe2f1;
+}
+.aegis-input:focus {
+  outline: none;
+  border-color: #00e5ff;
+  box-shadow: 0 0 0 1px #00e5ff;
+}
