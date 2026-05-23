@@ -14,14 +14,17 @@ export function LoginForm({ onLogin }: LoginFormProps) {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const form = e.currentTarget
+    const formUser = (form.elements.namedItem('username') as HTMLInputElement).value
+    const formPass = (form.elements.namedItem('password') as HTMLInputElement).value
     setBusy(true)
     setError('')
     try {
       const res = await fetchJson<AuthLoginResponse>('/api/auth/login', {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username: formUser, password: formPass }),
       })
       localStorage.setItem('AegisAuthToken', res.access_token)
       onLogin(res.access_token, res.user.role)
@@ -51,11 +54,13 @@ export function LoginForm({ onLogin }: LoginFormProps) {
               Username
             </label>
             <input
+              name="username"
               type="text"
               className="aegis-input w-full rounded-lg px-4 py-3"
               placeholder="admin"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
               autoFocus
             />
           </div>
@@ -64,11 +69,13 @@ export function LoginForm({ onLogin }: LoginFormProps) {
               Password
             </label>
             <input
+              name="password"
               type={showPwd ? 'text' : 'password'}
               className="aegis-input w-full rounded-lg px-4 py-3 pr-12"
               placeholder="••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
             />
             <button
               type="button"
