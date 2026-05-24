@@ -5,15 +5,19 @@ services:
     build: .
     ports:
       - "8000:8000"
-    env_file:
-      - .env
     environment:
       - AI_MONITORING_DB_PATH=/app/monitoring.db
+      - AI_MONITOR_YOLO_AUTO_DOWNLOAD=1
+      - AI_MONITOR_PASSWORD_ADMIN=admin123
+      - AI_MONITOR_PASSWORD_MANAGER=manager123
+      - AI_MONITOR_PASSWORD_OPERATOR=operator123
+      - AI_MONITOR_JWT_SECRET=aegis-dev-secret-change-in-production
+      - AI_MONITOR_CORS_ORIGINS=http://localhost:8000
       - PYTHONUNBUFFERED=1
     volumes:
       - db_data:/app/data
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')\""]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
       interval: 30s
       timeout: 10s
       retries: 3
