@@ -86,11 +86,14 @@ class CameraRuntime:
             for state in sources:
                 source = state.source
                 try:
+                    stype = source.source_type
+                    if stype == "live_mjpeg":
+                        stype = "mjpeg"
                     stream_source = StreamSource(
                         camera_id=source.id,
                         name=source.name,
                         url=source.url,
-                        stream_type="mjpeg" if source.source_type == "live_mjpeg" else source.source_type,
+                        stream_type=stype,
                     )
                     frame = grab_frame(stream_source)
                     if frame is None:

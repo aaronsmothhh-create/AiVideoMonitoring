@@ -27,9 +27,11 @@ export function CamerasPage({ cameras, publicSources, frameKey }: CamerasPagePro
               </div>
               <div className="absolute right-3 top-3 rounded bg-black/60 px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-primary-container backdrop-blur-md">
                 {camera.source_type === 'retail_scene'
-                  ? 'Retail synthetic'
+                  ? 'Синтетическая'
                   : camera.source_type === 'live_mjpeg'
-                  ? 'Live MJPEG'
+                  ? 'Живой MJPEG'
+                  : camera.source_type === 'video_file'
+                  ? 'Видеопоток'
                   : camera.source_type ?? '—'}
               </div>
             </div>
@@ -43,16 +45,16 @@ export function CamerasPage({ cameras, publicSources, frameKey }: CamerasPagePro
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <CameraStat label="Status" value={camera.status} />
-                <CameraStat label="AI" value={camera.ai_status} />
+                <CameraStat label="Статус" value={camera.status} />
+                <CameraStat label="ИИ" value={camera.ai_status} />
                 <CameraStat label="FPS" value={camera.fps.toString()} />
-                <CameraStat label="Quality" value={qualityLabel(camera.quality_score)} />
-                <CameraStat label="Uptime" value={formatSeconds((camera.uptime_minutes ?? 0) * 60)} />
-                <CameraStat label="Last frame" value={timeAgo(camera.last_seen_at)} />
+                <CameraStat label="Качество" value={qualityLabel(camera.quality_score)} />
+                <CameraStat label="Аптайм" value={formatSeconds((camera.uptime_minutes ?? 0) * 60)} />
+                <CameraStat label="Посл. кадр" value={timeAgo(camera.last_seen_at)} />
               </div>
 
               <div className="rounded-lg border border-border-subtle bg-surface-container-low p-2">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Source</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Источник</p>
                 <p className="break-all font-mono text-xs text-on-surface">{camera.rtsp_url}</p>
               </div>
 
@@ -73,7 +75,7 @@ export function CamerasPage({ cameras, publicSources, frameKey }: CamerasPagePro
 
       <div className="rounded-xl border border-border-subtle bg-surface-container p-6">
         <h3 className="mb-4 text-[12px] font-bold uppercase tracking-widest text-white">
-          Источники видео (synthetic + public)
+          Источники видео
         </h3>
         <div className="grid gap-2 md:grid-cols-2">
           {publicSources.map((source) => (

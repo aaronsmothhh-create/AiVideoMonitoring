@@ -2,9 +2,9 @@ import { Cpu } from 'lucide-react'
 import type { DetectionCapability } from '../../types'
 
 function readinessLabel(readiness: DetectionCapability['readiness']) {
-  if (readiness === 'demo_ready') return 'Demo-ready'
-  if (readiness === 'heuristic_ready') return 'Heuristic ready'
-  return 'Pilot needed'
+  if (readiness === 'demo_ready') return 'Готово к демо'
+  if (readiness === 'heuristic_ready') return 'Эвристика'
+  return 'Нужен пилот'
 }
 
 type CapabilityCardProps = { capabilities: DetectionCapability[] }
@@ -14,7 +14,7 @@ export function CapabilityCard({ capabilities }: CapabilityCardProps) {
     <div className="rounded-xl border border-border-subtle bg-surface-container p-6">
       <h3 className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-white">
         <Cpu size={16} className="text-primary-container" />
-        Detection capabilities
+        Возможности детекции
       </h3>
       <p className="mt-1 text-sm text-on-surface-variant">
         Что уже умеем выявлять, какие признаки используем и где честные ограничения MVP.

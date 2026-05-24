@@ -56,6 +56,9 @@ backend/.yolo_cache/
 *.pt
 *.onnx
 
+# Sample videos (downloaded by setup script)
+backend/data/sample_videos/*.mp4
+
 # Env files (keep .env.example committed if any)
 .env.local
 .env.*.local

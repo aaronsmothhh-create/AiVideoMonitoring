@@ -9,8 +9,8 @@ export function TrendCard({ eventTrend, className = '' }: TrendCardProps) {
   return (
     <div className={`rounded-xl border border-border-subtle bg-surface-container p-5 ${className}`}>
       <div className="mb-5 flex items-center justify-between">
-        <h3 className="text-[12px] font-bold uppercase tracking-widest text-white">Event Frequency Trend</h3>
-        <span className="font-mono text-[11px] text-status-success">+4.2% vs Yesterday</span>
+        <h3 className="text-[12px] font-bold uppercase tracking-widest text-white">Частота событий</h3>
+        <span className="font-mono text-[11px] text-status-success">+4.2% ко вчера</span>
       </div>
       <div className="flex h-32 items-end gap-1 px-1">
         {eventTrend.map((v, idx) => {
@@ -36,7 +36,7 @@ export function TrendCard({ eventTrend, className = '' }: TrendCardProps) {
         <span>-1h</span>
         <span>30m</span>
         <span>10m</span>
-        <span>NOW</span>
+        <span>СЕЙЧАС</span>
       </div>
     </div>
   )

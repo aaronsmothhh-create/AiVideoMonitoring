@@ -28,7 +28,7 @@ export function EventDetailCard({ event, busy, role, onFeedback }: EventDetailCa
               {EVENT_TYPE_LABELS[event.type]}
             </span>
             <span className="rounded-full bg-surface-bright px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-              {Math.round(event.confidence * 100)}% confidence
+              {Math.round(event.confidence * 100)}% уверенность
             </span>
           </div>
           <h3 className="text-lg font-semibold text-white">{event.title}</h3>

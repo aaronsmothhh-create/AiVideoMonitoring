@@ -29,7 +29,7 @@ export function CameraFeedCard({ camera, frameKey, active, onClick }: CameraFeed
         <div>
           <p className="font-mono text-[12px] font-medium text-white">{camera.name.toUpperCase()}</p>
           <p className="text-[10px] uppercase tracking-widest text-on-surface-variant">
-            FPS {camera.fps} · Quality {qualityLabel(camera.quality_score)}
+            FPS {camera.fps} · Качество {qualityLabel(camera.quality_score)}
           </p>
         </div>
         <span className={`flex h-6 w-6 items-center justify-center rounded-full ${

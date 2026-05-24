@@ -39,15 +39,15 @@ export function HeroSparkArt() {
         <circle key={i} cx={cx} cy={cy} r="4" fill="#00e5ff" />
       ))}
       <g fontFamily="JetBrains Mono, monospace" fontSize="9" fill="#94A3B8">
-        <text x="20" y="210">EVENTS</text>
-        <text x="180" y="210">TODAY</text>
-        <text x="320" y="210">NOW</text>
+        <text x="20" y="210">СОБЫТИЯ</text>
+        <text x="180" y="210">СЕГОДНЯ</text>
+        <text x="320" y="210">СЕЙЧАС</text>
       </g>
       <g fontFamily="JetBrains Mono, monospace" fontSize="10" fill="#00e5ff">
-        <text x="20" y="30">RETAIL CCTV CLUSTER</text>
+        <text x="20" y="30">КЛАСТЕР ВИДЕОНАБЛЮДЕНИЯ</text>
       </g>
       <g fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#bac9cc">
-        <text x="20" y="46">Confidence ranged 0.6 → 0.94 · YOLOv8</text>
+        <text x="20" y="46">Уверенность 0.6 → 0.94 · YOLOv8</text>
       </g>
     </svg>
   )

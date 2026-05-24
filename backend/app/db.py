@@ -150,7 +150,15 @@ def _execute_schema(connection: sqlite3.Connection) -> None:
 def init_db() -> None:
     with connect() as connection:
         _execute_schema(connection)
-        for source in default_sources():
+        sources = default_sources()
+        default_ids = {s.id for s in sources}
+        existing = [row["id"] for row in connection.execute("SELECT id FROM camera_sources").fetchall()]
+        for eid in existing:
+            if eid not in default_ids:
+                connection.execute("DELETE FROM camera_sources WHERE id = ?", (eid,))
+                connection.execute("DELETE FROM cameras WHERE id = ?", (eid,))
+                connection.execute("DELETE FROM zones WHERE camera_id = ?", (eid,))
+        for source in sources:
             upsert_camera_source(source, connection)
         for key, value in DEFAULT_SETTINGS.model_dump().items():
             connection.execute("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", (key, str(value)))

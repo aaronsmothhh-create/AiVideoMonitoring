@@ -22,11 +22,11 @@ export const ROLE_LABELS: Record<Role, string> = {
 }
 
 export const TAB_LABELS: Record<Tab, string> = {
-  overview: 'Overview',
-  events: 'Events',
-  analytics: 'Analytics',
-  cameras: 'Cameras',
-  settings: 'Settings',
+  overview: 'Обзор',
+  events: 'События',
+  analytics: 'Аналитика',
+  cameras: 'Камеры',
+  settings: 'Настройки',
 }
 
 export const emptyFilters = {

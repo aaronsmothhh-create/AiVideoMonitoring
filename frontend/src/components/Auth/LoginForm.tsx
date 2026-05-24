@@ -46,12 +46,12 @@ export function LoginForm({ onLogin }: LoginFormProps) {
             <ShieldAlert size={28} />
           </div>
           <h1 className="text-headline-lg font-bold text-primary">Aegis AI</h1>
-          <p className="text-sm text-on-surface-variant">AI Video Monitoring System</p>
+          <p className="text-sm text-on-surface-variant">Система ИИ-видеомониторинга</p>
         </div>
         <div className="space-y-4">
           <div>
             <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-              Username
+              Имя пользователя
             </label>
             <input
               name="username"
@@ -66,7 +66,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           </div>
           <div className="relative">
             <label className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
-              Password
+              Пароль
             </label>
             <input
               name="password"
@@ -97,7 +97,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           {busy ? 'Вход…' : 'Войти'}
         </button>
         <p className="mt-4 text-center text-xs text-on-surface-variant">
-          Demo: admin / admin123
+          Демо: admin / admin123
         </p>
       </form>
     </div>
