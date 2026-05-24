@@ -12,7 +12,7 @@ export function TelegramPreviewCard({ preview, busy, onTest }: TelegramPreviewCa
     <div className="rounded-xl border border-border-subtle bg-surface-container p-5">
       <h3 className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-white">
         <Bot size={16} className="text-primary-container" />
-        Telegram inline preview
+        Telegram предпросмотр
       </h3>
       <div className="mt-4 rounded-lg border border-border-subtle bg-surface-container-lowest p-3 text-on-surface">
         <p className="whitespace-pre-line text-sm leading-6">
@@ -34,7 +34,7 @@ export function TelegramPreviewCard({ preview, busy, onTest }: TelegramPreviewCa
         onClick={() => void onTest()}
         className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-border-subtle bg-surface-container-low px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-on-surface transition hover:bg-surface-bright disabled:opacity-50"
       >
-        <Bell size={14} /> Telegram test
+        <Bell size={14} /> Тест Telegram
       </button>
     </div>
   )

@@ -32,7 +32,7 @@ export function Sidebar({ activeTab, onTabChange, onLogout, role, isMobileOpen, 
           <div>
             <h1 className="text-headline-md font-bold text-primary">Aegis AI</h1>
             <p className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">
-              Vigilant AI Active
+              ИИ-мониторинг активен
             </p>
           </div>
         </div>
@@ -72,18 +72,18 @@ export function Sidebar({ activeTab, onTabChange, onLogout, role, isMobileOpen, 
           target="_blank"
           rel="noreferrer"
         >
-          <Download size={16} /> Export Reports
+          <Download size={16} /> Экспорт отчётов
         </a>
         <button className="flex w-full items-center gap-4 rounded-lg p-3 text-left text-on-surface-variant transition-colors hover:bg-surface-bright hover:text-on-surface">
           <HelpCircle size={18} />
-          <span className="text-[12px] font-bold uppercase tracking-widest">Help</span>
+          <span className="text-[12px] font-bold uppercase tracking-widest">Помощь</span>
         </button>
         <button
           onClick={onLogout}
           className="flex w-full items-center gap-4 rounded-lg p-3 text-left text-on-surface-variant transition-colors hover:bg-surface-bright hover:text-on-surface"
         >
           <LogOut size={18} />
-          <span className="text-[12px] font-bold uppercase tracking-widest">Logout</span>
+          <span className="text-[12px] font-bold uppercase tracking-widest">Выход</span>
         </button>
       </div>
     </div>

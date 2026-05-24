@@ -26,6 +26,7 @@ SourceType = Literal[
     "live_mjpeg",
     "retail_scene",
     "jpeg_snapshot",
+    "video_file",
 ]
 ZoneKind = Literal["work_area", "shelf", "entrance", "checkout", "stock"]
 

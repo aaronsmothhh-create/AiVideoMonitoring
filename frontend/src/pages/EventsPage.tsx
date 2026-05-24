@@ -23,7 +23,7 @@ export function EventsPage({ cameras, events, filters, busy, role, onChangeFilte
         <div className="rounded-xl border border-border-subtle bg-surface-container p-5">
           <div className="mb-4 flex items-center gap-2">
             <SlidersHorizontal size={16} className="text-primary-container" />
-            <h2 className="text-[12px] font-bold uppercase tracking-widest text-white">Filters</h2>
+            <h2 className="text-[12px] font-bold uppercase tracking-widest text-white">Фильтры</h2>
           </div>
           <div className="space-y-3">
             <FilterField label="Камера">
@@ -109,7 +109,7 @@ export function EventsPage({ cameras, events, filters, busy, role, onChangeFilte
               События ({events.length})
             </h2>
             <span className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">
-              Severity colour-coded
+              Цвет по важности
             </span>
           </div>
         </div>

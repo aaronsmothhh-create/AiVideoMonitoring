@@ -29,7 +29,7 @@ export function AnalyticsPage({ analytics, eventTrend, telegramPreview, busy, on
             <AnalyticsTile label="Новые" value={analytics.open_events} tone="primary" />
             <AnalyticsTile label="Отсутствия" value={analytics.absence_events} tone="warning" />
             <AnalyticsTile label="Подозрительные" value={analytics.suspicious_events} tone="danger" />
-            <AnalyticsTile label="Avg реакция" value={formatSeconds(analytics.average_reaction_seconds)} />
+            <AnalyticsTile label="Ср. реакция" value={formatSeconds(analytics.average_reaction_seconds)} />
             <AnalyticsTile
               label="Telegram"
               value={analytics.telegram_configured ? 'Настроен' : 'Mock'}

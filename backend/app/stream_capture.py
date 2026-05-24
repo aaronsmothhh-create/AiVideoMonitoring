@@ -46,55 +46,11 @@ class CapturedFrame:
 # Public MJPEG sources are kept as opportunistic fallbacks. Many of them are
 # flaky or geo-restricted, so the dashboard's primary cameras are now the
 # synthetic retail scenes below.
-PUBLIC_MJPEG_STREAMS: list[StreamSource] = [
-    StreamSource(
-        camera_id="cam-buffalo-trace",
-        name="Buffalo Trace Factory (USA)",
-        url="http://camera.buffalotrace.com/mjpg/video.mjpg",
-        stream_type="mjpeg",
-    ),
-]
+PUBLIC_MJPEG_STREAMS: list[StreamSource] = []
 
-RETAIL_SCENE_STREAMS: list[StreamSource] = [
-    StreamSource(
-        camera_id="cam-hypermarket-frozen",
-        name="Hypermarket — Frozen Aisle",
-        url="retail-scene://cam-hypermarket-frozen",
-        stream_type="retail_scene",
-    ),
-    StreamSource(
-        camera_id="cam-supermarket-produce",
-        name="Supermarket — Fresh Produce",
-        url="retail-scene://cam-supermarket-produce",
-        stream_type="retail_scene",
-    ),
-    StreamSource(
-        camera_id="cam-supermarket-beverage",
-        name="Supermarket — Beverages Aisle",
-        url="retail-scene://cam-supermarket-beverage",
-        stream_type="retail_scene",
-    ),
-    StreamSource(
-        camera_id="cam-supermarket-checkout",
-        name="Supermarket — Checkout Lanes",
-        url="retail-scene://cam-supermarket-checkout",
-        stream_type="retail_scene",
-    ),
-    StreamSource(
-        camera_id="cam-warehouse-stock",
-        name="Warehouse — Stock Backroom",
-        url="retail-scene://cam-warehouse-stock",
-        stream_type="retail_scene",
-    ),
-    StreamSource(
-        camera_id="cam-mall-entrance",
-        name="Shopping Mall — Main Entrance",
-        url="retail-scene://cam-mall-entrance",
-        stream_type="retail_scene",
-    ),
-]
+RETAIL_SCENE_STREAMS: list[StreamSource] = []
 
-LIVE_STREAMS: list[StreamSource] = RETAIL_SCENE_STREAMS + PUBLIC_MJPEG_STREAMS
+LIVE_STREAMS: list[StreamSource] = []
 
 
 def _grab_jpeg_snapshot(url: str) -> bytes | None:
@@ -156,6 +112,31 @@ def _grab_rtsp_frame(url: str) -> bytes | None:
         return None
 
 
+_video_captures: dict[str, cv2.VideoCapture] = {}
+_video_lock = threading.Lock()
+
+
+def _grab_video_file_frame(camera_id: str, path: str) -> bytes | None:
+    """Read the next frame from a local video file, looping when finished."""
+    with _video_lock:
+        cap = _video_captures.get(camera_id)
+        if cap is None or not cap.isOpened():
+            cap = cv2.VideoCapture(path)
+            if not cap.isOpened():
+                logger.warning("Video file failed to open: %s", path)
+                return None
+            _video_captures[camera_id] = cap
+        success, frame = cap.read()
+        if not success or frame is None:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            success, frame = cap.read()
+            if not success or frame is None:
+                logger.warning("Failed to read video file frame from %s", path)
+                return None
+    _, jpeg = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85])
+    return jpeg.tobytes()
+
+
 def grab_frame(source: StreamSource) -> CapturedFrame | None:
     """Grab one frame from a stream source and return it."""
     if source.stream_type == "retail_scene" or source.url.startswith("retail-scene://"):
@@ -174,7 +155,10 @@ def grab_frame(source: StreamSource) -> CapturedFrame | None:
             numpy_frame=frame,
         )
 
-    if source.stream_type == "rtsp" or source.url.startswith("rtsp://"):
+    if source.stream_type == "video_file" or source.url.startswith("file://"):
+        path = source.url.replace("file://", "") if source.url.startswith("file://") else source.url
+        raw = _grab_video_file_frame(source.camera_id, path)
+    elif source.stream_type == "rtsp" or source.url.startswith("rtsp://"):
         raw = _grab_rtsp_frame(source.url)
     elif source.stream_type == "jpeg_snapshot":
         raw = _grab_jpeg_snapshot(source.url)

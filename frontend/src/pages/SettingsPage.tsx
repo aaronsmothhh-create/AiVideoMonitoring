@@ -55,7 +55,7 @@ export function SettingsPage({ settings, role, busy, onChange, onSave, capabilit
                 }
               />
             </FilterField>
-            <FilterField label="Confidence threshold">
+            <FilterField label="Порог уверенности">
               <input
                 type="number"
                 step={0.05}

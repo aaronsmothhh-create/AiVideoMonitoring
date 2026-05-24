@@ -68,7 +68,7 @@ app.state.limiter = limiter
 @app.exception_handler(RateLimitExceeded)
 async def _rate_limit_handler(request: Request, exc: RateLimitExceeded):
     return Response(
-        content=json.dumps({"detail": "Too many requests. Please try again later."}),
+        content=json.dumps({"detail": "Слишком много запросов. Попробуйте позже."}),
         status_code=429,
         media_type="application/json",
     )

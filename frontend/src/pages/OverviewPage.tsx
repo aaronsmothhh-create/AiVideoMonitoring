@@ -51,15 +51,15 @@ export function OverviewPage(props: OverviewPageProps) {
         <div className="grid items-center gap-8 lg:grid-cols-[1fr_360px]">
           <div className="z-10">
             <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary-container/30 bg-primary-container/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-primary-container">
-              <Sparkles size={14} /> Unified Security Intelligence
+              <Sparkles size={14} /> Единая система безопасности
             </p>
             <h2 className="text-3xl font-bold text-white md:text-headline-lg">
               Контроль ритейла на основе AI
             </h2>
             <p className="mt-3 max-w-2xl text-base leading-7 text-on-surface-variant">
-              Real-time AI-видеомониторинг для гипермаркетов, супермаркетов и торговых
+              ИИ-видеомониторинг в реальном времени для гипермаркетов, супермаркетов и торговых
               центров. Камеры у полок, касс и складских зон, YOLOv8 для детекции людей,
-              события-кандидаты с честным confidence — без обвинений до проверки оператором.
+              события-кандидаты с честным показателем уверенности — без обвинений до проверки оператором.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <button
@@ -72,7 +72,7 @@ export function OverviewPage(props: OverviewPageProps) {
                 onClick={() => onSelectCamera(cameras[0]?.id ?? '')}
                 className="flex items-center gap-2 rounded-lg border border-border-subtle bg-surface-container-low px-5 py-3 text-[12px] font-bold uppercase tracking-widest text-on-surface transition hover:bg-surface-bright"
               >
-                <Video size={16} /> Live cameras
+                <Video size={16} /> Живые камеры
               </button>
             </div>
           </div>
@@ -88,23 +88,23 @@ export function OverviewPage(props: OverviewPageProps) {
       <section className="bento-grid">
         <KpiCard
           colSpan="col-span-12 sm:col-span-6 lg:col-span-3"
-          label="Total Active Cameras"
+          label="Активные камеры"
           value={`${onlineCameraCount}`}
           accent={
             <span className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-status-success">
               <span className="h-2 w-2 animate-pulse rounded-full bg-status-success" />
-              Online · {totalCameras} total
+              Онлайн · {totalCameras} всего
             </span>
           }
           icon={<Camera size={18} />}
         />
         <KpiCard
           colSpan="col-span-12 sm:col-span-6 lg:col-span-3"
-          label="Open / Critical Events"
+          label="Открытые / Критичные"
           value={`${openEvents}`}
           accent={
             <span className="rounded border border-status-danger/30 bg-status-danger/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-status-danger">
-              {criticalEvents} suspicious
+              {criticalEvents} подозрительных
             </span>
           }
           icon={<AlertTriangle size={18} />}
@@ -112,11 +112,11 @@ export function OverviewPage(props: OverviewPageProps) {
         />
         <KpiCard
           colSpan="col-span-12 sm:col-span-6 lg:col-span-3"
-          label="AI Detection Confidence"
+          label="Уверенность ИИ"
           value={`${aiAccuracy}%`}
           accent={
             <span className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-primary-container">
-              <TrendingUp size={14} /> Avg per event
+              <TrendingUp size={14} /> Среднее на событие
             </span>
           }
           icon={<Cpu size={18} />}
@@ -124,11 +124,11 @@ export function OverviewPage(props: OverviewPageProps) {
         />
         <KpiCard
           colSpan="col-span-12 sm:col-span-6 lg:col-span-3"
-          label="Shift Health"
+          label="Здоровье смены"
           value={`${suspiciousRate}%`}
           accent={
             <span className="font-mono text-[12px] text-on-surface-variant">
-              Suspicious rate
+              Доля подозрительных
             </span>
           }
           icon={<Gauge size={18} />}
@@ -141,13 +141,13 @@ export function OverviewPage(props: OverviewPageProps) {
           <div className="flex items-center justify-between">
             <h3 className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-on-surface-variant">
               <span className="h-2 w-2 animate-pulse rounded-full bg-status-danger" />
-              Live Monitoring Cluster
+              Кластер лив-мониторинга
             </h3>
             <div className="flex gap-2 text-on-surface-variant">
-              <button className="rounded p-1 transition hover:text-on-surface" title="Grid view">
+              <button className="rounded p-1 transition hover:text-on-surface" title="Сетка">
                 <Grid3X3 size={16} />
               </button>
-              <button className="rounded p-1 transition hover:text-on-surface" title="Fullscreen">
+              <button className="rounded p-1 transition hover:text-on-surface" title="Полный экран">
                 <Maximize2 size={16} />
               </button>
             </div>
@@ -169,19 +169,19 @@ export function OverviewPage(props: OverviewPageProps) {
           <div className="flex h-[420px] flex-col rounded-xl border border-border-subtle bg-surface-container">
             <div className="flex items-center justify-between border-b border-border-subtle p-4">
               <h3 className="text-[12px] font-bold uppercase tracking-widest text-white">
-                Recent Event Logs
+                Последние события
               </h3>
               <button
                 onClick={() => navigate('/events')}
                 className="text-[10px] font-bold uppercase tracking-wider text-primary-container hover:underline"
               >
-                View all
+                Все события
               </button>
             </div>
             <div className="flex-1 space-y-2 overflow-y-auto p-2">
               {events.length === 0 && (
                 <p className="p-4 text-sm text-on-surface-variant">
-                  Нет событий — нажмите «Simulate Event» в правом верхнем углу.
+                  Нет событий — нажмите «Симулировать событие» в правом верхнем углу.
                 </p>
               )}
               {events.map((event) => (

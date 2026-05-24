@@ -26,7 +26,7 @@ export function snapshotSrc(event: VideoEvent) {
 }
 
 export function cameraLiveSrc(camera: MonitoringCamera, frameKey: number) {
-  const usesLiveFrame = camera.source_type === 'live_mjpeg' || camera.source_type === 'retail_scene'
+  const usesLiveFrame = camera.source_type === 'live_mjpeg' || camera.source_type === 'retail_scene' || camera.source_type === 'video_file'
   if (usesLiveFrame) {
     return `${API_URL}/api/cameras/${camera.id}/frame_analyzed.jpg?t=${frameKey}`
   }
@@ -70,12 +70,12 @@ export function timeAgo(iso: string): string {
   if (Number.isNaN(dt)) return '—'
   const diff = Math.max(0, Date.now() - dt)
   const minutes = Math.floor(diff / 60_000)
-  if (minutes < 1) return 'just now'
-  if (minutes < 60) return `${minutes}m ago`
+  if (minutes < 1) return 'только что'
+  if (minutes < 60) return `${minutes} мин назад`
   const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
+  if (hours < 24) return `${hours} ч назад`
   const days = Math.floor(hours / 24)
-  return `${days}d ago`
+  return `${days} дн назад`
 }
 
 export function qualityLabel(score?: number) {

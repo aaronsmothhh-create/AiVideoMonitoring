@@ -95,7 +95,7 @@ def validate_token(token: str | None) -> User:
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing authentication token",
+            detail="Токен аутентификации отсутствует",
         )
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
@@ -105,12 +105,12 @@ def validate_token(token: str | None) -> User:
     except jwt.ExpiredSignatureError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token has expired",
+            detail="Токен истёк",
         )
     except (jwt.InvalidTokenError, KeyError):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication token",
+            detail="Неверный токен аутентификации",
         )
 
 
@@ -128,7 +128,7 @@ def role_required(allowed_roles: list[Role]):
         if user.role not in allowed_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="Insufficient privileges",
+                detail="Недостаточно прав",
             )
         return user
     return dependency
