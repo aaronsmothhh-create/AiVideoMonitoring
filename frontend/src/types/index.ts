@@ -35,6 +35,7 @@ export type SourceType =
   | 'public_webcam_archive'
   | 'live_mjpeg'
   | 'retail_scene'
+  | 'video_file'
 
 export type MonitoringCamera = {
   id: string
