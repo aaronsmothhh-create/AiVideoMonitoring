@@ -49,6 +49,9 @@ ALLOWED_ORIGINS = [
     ).split(",")
     if origin.strip()
 ]
+# Railway and other PaaS: trust same-origin requests
+if os.getenv("RAILWAY_PUBLIC_DOMAIN"):
+    ALLOWED_ORIGINS.append(f"https://{os.getenv('RAILWAY_PUBLIC_DOMAIN')}")
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -82,7 +85,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+FRONTEND_DIST = Path(os.getenv("FRONTEND_DIST", str(Path(__file__).resolve().parents[2] / "frontend" / "dist")))
 if (FRONTEND_DIST / "assets").exists():
     app.mount("/assets", StaticFiles(directory=FRONTEND_DIST / "assets"), name="assets")
 

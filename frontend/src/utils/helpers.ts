@@ -26,7 +26,7 @@ export function snapshotSrc(event: VideoEvent) {
 }
 
 export function cameraLiveSrc(camera: MonitoringCamera, frameKey: number) {
-  const usesLiveFrame = camera.source_type === 'live_mjpeg' || camera.source_type === 'retail_scene'
+  const usesLiveFrame = camera.source_type === 'live_mjpeg' || camera.source_type === 'retail_scene' || camera.source_type === 'video_file'
   if (usesLiveFrame) {
     return `${API_URL}/api/cameras/${camera.id}/frame_analyzed.jpg?t=${frameKey}`
   }

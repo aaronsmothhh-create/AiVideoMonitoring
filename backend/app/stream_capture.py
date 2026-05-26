@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import logging
+import os
 import threading
 import time
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import ClassVar
 from urllib.error import URLError
 from urllib.request import Request, urlopen
@@ -14,6 +16,11 @@ import cv2
 import numpy as np
 
 from retail_scenes import render_scene_frame
+
+_VIDEO_CAPS: dict[str, cv2.VideoCapture] = {}
+_VIDEO_LOCK = threading.Lock()
+
+_BASE_DIR = Path(__file__).resolve().parent.parent
 
 logger = logging.getLogger(__name__)
 
@@ -156,8 +163,42 @@ def _grab_rtsp_frame(url: str) -> bytes | None:
         return None
 
 
+def _grab_video_file_frame(source: StreamSource) -> CapturedFrame | None:
+    """Read the next frame from a local video file, looping on end."""
+    video_path = source.url
+    if not os.path.isabs(video_path):
+        video_path = str(_BASE_DIR / video_path)
+
+    with _VIDEO_LOCK:
+        cap = _VIDEO_CAPS.get(source.camera_id)
+        if cap is None or not cap.isOpened():
+            cap = cv2.VideoCapture(video_path)
+            if not cap.isOpened():
+                logger.warning("Cannot open video file: %s", video_path)
+                return None
+            _VIDEO_CAPS[source.camera_id] = cap
+
+        ok, frame = cap.read()
+        if not ok or frame is None:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            ok, frame = cap.read()
+            if not ok or frame is None:
+                logger.warning("Cannot read from video file: %s", video_path)
+                return None
+
+    _, jpeg = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85])
+    return CapturedFrame(
+        camera_id=source.camera_id,
+        jpeg_bytes=jpeg.tobytes(),
+        numpy_frame=frame,
+    )
+
+
 def grab_frame(source: StreamSource) -> CapturedFrame | None:
     """Grab one frame from a stream source and return it."""
+    if source.stream_type == "video_file":
+        return _grab_video_file_frame(source)
+
     if source.stream_type == "retail_scene" or source.url.startswith("retail-scene://"):
         # Allow using a retail-scene URL that names a different scene than the
         # camera id (e.g. url="retail-scene://cam-mall-entrance"). Extract the
