@@ -9,10 +9,10 @@ def default_sources() -> list[CameraSource]:
     return [
         CameraSource(
             id="cam-hypermarket-frozen",
-            name="Hypermarket - Frozen Aisle",
-            location="Hypermarket / Frozen foods",
-            url="retail-scene://cam-hypermarket-frozen",
-            source_type="retail_scene",
+            name="Гипермаркет — Холодильный отдел",
+            location="Гипермаркет / Замороженные продукты",
+            url="data/sample_videos/people_3.mp4",
+            source_type="video_file",
             fps_limit=8,
             zones=[
                 Zone(id="zone-hyp-frozen-shelf", name="Frozen shelves", kind="shelf"),
@@ -21,10 +21,10 @@ def default_sources() -> list[CameraSource]:
         ),
         CameraSource(
             id="cam-supermarket-produce",
-            name="Supermarket - Fresh Produce",
-            location="Supermarket / Produce",
-            url="retail-scene://cam-supermarket-produce",
-            source_type="retail_scene",
+            name="Супермаркет — Свежие продукты",
+            location="Супермаркет / Овощи и фрукты",
+            url="data/sample_videos/people_4.mp4",
+            source_type="video_file",
             fps_limit=8,
             zones=[
                 Zone(id="zone-sm-produce-display", name="Produce display", kind="shelf"),
@@ -33,10 +33,10 @@ def default_sources() -> list[CameraSource]:
         ),
         CameraSource(
             id="cam-supermarket-beverage",
-            name="Supermarket - Beverages Aisle",
-            location="Supermarket / Beverages",
-            url="retail-scene://cam-supermarket-beverage",
-            source_type="retail_scene",
+            name="Супермаркет — Напитки",
+            location="Супермаркет / Напитки",
+            url="data/sample_videos/people_5.mp4",
+            source_type="video_file",
             fps_limit=8,
             zones=[
                 Zone(id="zone-sm-bev-shelf", name="Beverage shelves", kind="shelf"),
@@ -45,10 +45,10 @@ def default_sources() -> list[CameraSource]:
         ),
         CameraSource(
             id="cam-supermarket-checkout",
-            name="Supermarket - Checkout Lanes",
-            location="Supermarket / Checkout",
-            url="retail-scene://cam-supermarket-checkout",
-            source_type="retail_scene",
+            name="Супермаркет — Кассовая зона",
+            location="Супермаркет / Кассы",
+            url="data/sample_videos/people_6.mp4",
+            source_type="video_file",
             fps_limit=8,
             zones=[
                 Zone(id="zone-sm-checkout-desks", name="Checkout desks", kind="checkout"),
@@ -57,10 +57,10 @@ def default_sources() -> list[CameraSource]:
         ),
         CameraSource(
             id="cam-warehouse-stock",
-            name="Warehouse - Stock Backroom",
-            location="Warehouse / Stock",
-            url="retail-scene://cam-warehouse-stock",
-            source_type="retail_scene",
+            name="Склад — Стеллажи",
+            location="Склад / Хранение",
+            url="data/sample_videos/people_7.mp4",
+            source_type="video_file",
             fps_limit=8,
             zones=[
                 Zone(id="zone-warehouse-racks", name="Storage racks", kind="stock"),
@@ -69,10 +69,10 @@ def default_sources() -> list[CameraSource]:
         ),
         CameraSource(
             id="cam-mall-entrance",
-            name="Shopping Mall - Main Entrance",
-            location="Shopping mall / Entrance",
-            url="retail-scene://cam-mall-entrance",
-            source_type="retail_scene",
+            name="ТЦ — Главный вход",
+            location="Торговый центр / Вход",
+            url="data/sample_videos/people_8.mp4",
+            source_type="video_file",
             fps_limit=8,
             zones=[
                 Zone(id="zone-mall-entry", name="Entrance doors", kind="entrance"),
