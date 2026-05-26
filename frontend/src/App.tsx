@@ -223,7 +223,7 @@ function AppShell() {
   }, [events])
 
   const filteredCameras = useMemo(
-    () => cameras.filter((c) => c.source_type === 'retail_scene' || c.source_type === 'live_mjpeg'),
+    () => cameras.filter((c) => c.source_type === 'retail_scene' || c.source_type === 'live_mjpeg' || c.source_type === 'video_file'),
     [cameras]
   )
 
