@@ -13,9 +13,10 @@ WORKDIR /app
 # Install CPU-only PyTorch first (saves ~1.5GB vs CUDA version)
 RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
 
-COPY backend/pyproject.toml backend/poetry.lock* ./
-RUN pip install "poetry>=1.8"
-RUN poetry config virtualenvs.create false && poetry install --no-root
+COPY backend/pyproject.toml ./
+RUN pip install --no-cache-dir "poetry>=1.8"
+# Skip lock file to avoid reinstalling CUDA torch over CPU version
+RUN poetry config virtualenvs.create false && poetry install --no-root --no-lock
 
 COPY backend/app ./app
 COPY backend/data ./data
