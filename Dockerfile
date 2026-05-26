@@ -7,12 +7,16 @@ COPY frontend ./
 RUN npm run build
 
 FROM python:3.12-slim AS backend
-RUN apt-get update && apt-get install -y ffmpeg libgl1-mesa-glx libglib2.0-0 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg libgl1 libglib2.0-0 && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
-COPY backend/pyproject.toml backend/poetry.lock* ./
-RUN pip install "poetry>=1.8"
-RUN poetry config virtualenvs.create false && poetry install --no-root
+# Install CPU-only PyTorch first (saves ~1.5GB vs CUDA version)
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+COPY backend/pyproject.toml ./
+RUN pip install --no-cache-dir "poetry>=1.8"
+# Skip lock file to avoid reinstalling CUDA torch over CPU version
+RUN poetry config virtualenvs.create false && poetry install --no-root --no-lock
 
 COPY backend/app ./app
 COPY backend/data ./data
